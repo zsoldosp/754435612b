@@ -35,10 +35,14 @@ def get_github_info():
     host = get_env_var("GITHUB_SERVER_URL")
     run_id = get_env_var("GITHUB_RUN_ID")
     repo_url = f"{host}/{repo}"
-    return {
+
+    github_payload = {
         "repository_link": repo_url,
-        "action_run_link": f"{repo}/actions/runs/{run_id}",
+        "action_run_link": f"{repo_url}/actions/runs/{run_id}",
     }
+    print(f'DEBUG: GH vars {repo=} {host=} {run_id=} {repo_url=}')
+    pprint.pprint(dict(github_payload=github_payload))
+    return github_payload
 
 
 def get_env_var(key: str):
