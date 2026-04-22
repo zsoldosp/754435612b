@@ -17,7 +17,7 @@ jobs:
       - name: Run Python script
         run: python main.py
         env:
-          EMAIL_ADDRESS: {{ secrets.EMAIL_ADDRESS }}
-          NAME: {{ secrets.NAME }}
-          RESUME_LINK: {{ secrets.RESUME_LINK }}
-          SUBMIT_URL: {{ secrets.SUBMIT_URL }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          NAME: ${{ secrets.NAME }}
+          RESUME_LINK: ${{ secrets.RESUME_LINK }}
+          SUBMIT_URL: ${{ secrets.SUBMIT_URL }}
