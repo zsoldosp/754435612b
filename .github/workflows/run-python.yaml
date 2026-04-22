@@ -21,3 +21,4 @@ jobs:
           NAME: ${{ secrets.NAME }}
           RESUME_LINK: ${{ secrets.RESUME_LINK }}
           SUBMIT_URL: ${{ secrets.SUBMIT_URL }}
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
