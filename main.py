@@ -3,8 +3,9 @@ import hmac
 import json
 import os
 import pprint
-import urllib.request
+import requests
 from datetime import datetime, timezone
+import requests
 
 
 def main():
@@ -13,7 +14,7 @@ def main():
     response_data = send(body)
     if response_data.get('success') != True:
         pprint.pprint(response_data)
-        raise ValueError(f'Expected True for {response.data=} "success" key')
+        raise ValueError(f'Expected True for {response_data=} "success" key')
     print(f"Receipt: {response_data['receipt']}")
 
 
@@ -62,22 +63,22 @@ def to_body(data: dict) -> bytes:
 def send(body):
     signature = get_signature(body)
     headers = {
+        "Accept": "application/json",
         "Content-Type": "application/json",
         "X-Signature-256": f"sha256={signature}",
     }
     url = get_env_var('SUBMIT_URL')
-    req = urllib.request.Request(
-        url,
-        data=body,
-        headers=headers,
-        method="POST",
-    )
-
-    with urllib.request.urlopen(req) as response:
-        if response.status != 200:
-            raise ValueError(f'Expected 200, got {response.status=}')
-        raw = response.read().decode("utf-8")
-        return json.loads(raw)
+    response = requests.post(url=url, data=body, headers=headers, timeout=3)
+    try:
+        if response.status_code != 200:
+            raise ValueError(f'Expected 200, got {response.status_code=}')
+    except:
+        print(f'{response.status_code=}')
+        pprint.pprint(dict(response.headers))
+        print(response.content)
+        raise
+    else:
+        return response.json()
 
 
 def get_signature(body: bytes):
